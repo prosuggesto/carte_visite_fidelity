@@ -3,7 +3,7 @@
    Caches all assets for offline access
    ============================================ */
 
-const CACHE_NAME = 'contact-card-v10';
+const CACHE_NAME = 'contact-card-v11';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

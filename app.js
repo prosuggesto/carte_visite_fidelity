@@ -14,7 +14,8 @@
 
     // Private Access Check
     const urlParams = new URLSearchParams(window.location.search);
-    const hasAccess = urlParams.get('source') === 'qr';
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const hasAccess = urlParams.get('source') === 'qr' || isStandalone;
 
     function initFlip() {
         const card = document.getElementById('business-card');
