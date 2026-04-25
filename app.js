@@ -52,7 +52,8 @@
         url.searchParams.set('source', 'qr');
         
         const cardEl = document.querySelector('.card-face.back');
-        const qrSize = cardEl ? Math.min(Math.floor(cardEl.offsetHeight * 0.35), 80) : 70;
+        // Increase QR code base size up to 100px for easier detection
+        const qrSize = cardEl ? Math.min(Math.floor(cardEl.offsetHeight * 0.45), 100) : 90;
 
         new QRCode(container, {
             text: url.toString(),
