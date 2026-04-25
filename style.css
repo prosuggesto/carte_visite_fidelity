@@ -95,26 +95,26 @@ a {
 
 .shooting-star {
     position: absolute;
-    width: 1.5px;
-    height: 90px;
-    background: linear-gradient(to bottom, rgba(255, 215, 0, 0), rgba(212, 175, 55, 0.6) 80%, rgba(255, 255, 255, 1) 100%);
-    border-radius: 2px;
+    width: 150px;
+    height: 1.5px;
+    /* Head is on the left (front of movement), tail fading to right */
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,215,0,0.8) 10%, rgba(255,215,0,0) 100%);
+    border-radius: 999px;
     opacity: 0;
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.8));
-    animation: shooting 4s linear infinite;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.8)) drop-shadow(0 0 12px rgba(255,215,0,0.4));
 }
 
 @keyframes shooting {
-    0% { transform: rotate(45deg) translateY(-200px); opacity: 0; }
-    5% { opacity: 1; }
-    20% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
-    100% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
+    0% { transform: translateX(200px) translateY(-200px) rotate(35deg); opacity: 0; width: 0; }
+    2% { opacity: 1; width: 150px; }
+    8% { transform: translateX(-800px) translateY(500px) rotate(35deg); opacity: 0; width: 0; }
+    100% { transform: translateX(-800px) translateY(500px) rotate(35deg); opacity: 0; width: 0; }
 }
 
-.star-1 { top: 10%; left: 20%; animation-delay: 0s; animation-duration: 5s; }
-.star-2 { top: -10%; right: 30%; animation-delay: 2.2s; height: 60px; animation-duration: 4s; }
-.star-3 { top: 30%; left: -10%; animation-delay: 1.5s; height: 110px; animation-duration: 6s; }
-.star-4 { top: 5%; right: 10%; animation-delay: 3.8s; height: 75px; animation-duration: 4.5s; }
+.star-1 { top: 15%; right: 10%; animation: shooting 6s infinite 0s; }
+.star-2 { top: 30%; right: -10%; animation: shooting 8s infinite 3.5s; }
+.star-3 { top: -5%; right: 30%; animation: shooting 5s infinite 1.2s; }
+.star-4 { top: 40%; right: 20%; animation: shooting 7s infinite 5s; }
 
 /* ============================================
    CARD SCENE (perspective container)
@@ -540,7 +540,7 @@ a {
         0 0 0 1px rgba(255, 215, 0, 0.1);
     
     animation: btn-enter 0.5s ease forwards;
-    animation-delay: 1s;
+    animation-delay: 0.15s;
     opacity: 0;
     transform: translateY(10px);
 }
