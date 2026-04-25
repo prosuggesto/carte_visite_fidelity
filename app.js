@@ -12,9 +12,19 @@
         phone: '+33767569224',
     };
 
+    // Private Access Check
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasAccess = urlParams.get('source') === 'qr';
+
     function initFlip() {
         const card = document.getElementById('business-card');
         if (!card) return;
+
+        if (!hasAccess) {
+            document.body.classList.add('locked-mode');
+            // If locked, we don't allow flipping or interacting
+            return;
+        }
 
         // Toggle sur mobile (clic)
         card.addEventListener('click', (e) => {
@@ -36,12 +46,15 @@
         if (!container) return;
         container.innerHTML = '';
 
-        const url = window.location.href;
+        const url = new URL(window.location.href);
+        // Ensure the generated QR code gives access
+        url.searchParams.set('source', 'qr');
+        
         const cardEl = document.querySelector('.card-face.back');
         const qrSize = cardEl ? Math.min(Math.floor(cardEl.offsetHeight * 0.35), 80) : 70;
 
         new QRCode(container, {
-            text: url,
+            text: url.toString(),
             width: qrSize,
             height: qrSize,
             colorDark: '#FFD700',
@@ -96,7 +109,16 @@
         generateQRCode();
         
         const btn = document.getElementById('save-contact');
-        if (btn) btn.addEventListener('click', generateVCard);
+        if (btn) {
+            if (!hasAccess) {
+                // Button does nothing in locked mode visually, but let's disable functionality too
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                });
+            } else {
+                btn.addEventListener('click', generateVCard);
+            }
+        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(() => {});

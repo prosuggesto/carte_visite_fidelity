@@ -647,6 +647,40 @@ a {
 }
 
 /* ============================================
+   LOCKED MODE (NO QR ACCESS)
+   ============================================ */
+
+body.locked-mode .business-card {
+    filter: blur(12px) brightness(0.6);
+    pointer-events: none;
+}
+
+body.locked-mode .save-btn {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+body.locked-mode .tap-hint {
+    visibility: hidden;
+}
+
+body.locked-mode .card-scene::after {
+    content: "🔒 Scannez le QR Code";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 1.4rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+}
+
+/* ============================================
    RESPONSIVE DESIGN (MOBILE MAX-WIDTH)
    ============================================ */
 
