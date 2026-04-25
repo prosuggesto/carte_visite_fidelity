@@ -47,6 +47,10 @@ html {
     -webkit-font-smoothing: antialiased;
 }
 
+html {
+    background-color: #F8F6EF; /* One pure cream color */
+}
+
 body {
     font-family: var(--font-body);
     min-height: 100dvh;
@@ -54,10 +58,9 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
-    /* Diagonal light gray background like the ref image */
-    background: 
-        linear-gradient(135deg, var(--page-bg) 0%, #ddd9d3 40%, var(--page-bg-2) 60%, var(--page-bg) 100%);
+    background-color: #F8F6EF; /* Matching cream */
     padding: 30px 16px;
+    position: relative;
 }
 
 a {
@@ -79,34 +82,39 @@ a {
 }
 
 /* ============================================
-   TAP HINT
+   SHOOTING STARS (BACKGROUND ANIMATION)
    ============================================ */
 
-.tap-hint {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #888;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    animation: hint-fade 3s ease forwards;
-    animation-delay: 3s;
+.star-field {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
 }
 
-.hint-icon {
-    font-size: 1.1rem;
-    animation: hint-bounce 1.5s ease-in-out infinite;
+.shooting-star {
+    position: absolute;
+    width: 1.5px;
+    height: 90px;
+    background: linear-gradient(to bottom, rgba(255, 215, 0, 0), rgba(212, 175, 55, 0.6) 80%, rgba(255, 255, 255, 1) 100%);
+    border-radius: 2px;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.8));
+    animation: shooting 4s linear infinite;
 }
 
-@keyframes hint-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+@keyframes shooting {
+    0% { transform: rotate(45deg) translateY(-200px); opacity: 0; }
+    5% { opacity: 1; }
+    20% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
+    100% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
 }
 
-@keyframes hint-fade {
-    to { opacity: 0.3; }
-}
+.star-1 { top: 10%; left: 20%; animation-delay: 0s; animation-duration: 5s; }
+.star-2 { top: -10%; right: 30%; animation-delay: 2.2s; height: 60px; animation-duration: 4s; }
+.star-3 { top: 30%; left: -10%; animation-delay: 1.5s; height: 110px; animation-duration: 6s; }
+.star-4 { top: 5%; right: 10%; animation-delay: 3.8s; height: 75px; animation-duration: 4.5s; }
 
 /* ============================================
    CARD SCENE (perspective container)
