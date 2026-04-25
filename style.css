@@ -137,8 +137,14 @@ a {
     opacity: 1;
 }
 
-/* Hover and Click Flip Logic */
-.card-scene:hover .business-card,
+/* Hover Logic ONLY for desktop mice to avoid mobile sticky-hover bugs */
+@media (hover: hover) and (pointer: fine) {
+    .card-scene:hover .business-card {
+        transform: rotateY(180deg) translateY(-40px);
+    }
+}
+
+/* Click/Tap Logic for all devices (especially Mobile) */
 .business-card.is-flipped {
     transform: rotateY(180deg) translateY(-40px);
 }
@@ -324,14 +330,7 @@ a {
     box-shadow: 0 0 6px var(--gold-glow);
 }
 
-.line-bottom-b {
-    bottom: 12px;
-    right: 12px;
-    width: 50px;
-    height: 1px;
-    background: var(--gold-gradient);
-    box-shadow: 0 0 6px var(--gold-glow);
-}
+/* Removed .line-bottom-b to prevent text overlap */
 
 /* ============================================
    FRONT CONTENT
