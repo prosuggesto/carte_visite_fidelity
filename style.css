@@ -165,8 +165,12 @@ a {
         0 30px 70px rgba(0, 0, 0, 0.1);
 }
 
+.front {
+    transform: rotateY(0deg) translateZ(1px); /* Safari Fix */
+}
+
 .back {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) translateZ(-1px); /* Safari Fix */
 }
 
 /* ============================================
@@ -440,7 +444,7 @@ a {
     font-size: 0.72rem;
     font-weight: 500;
     color: var(--text-mid);
-    word-break: break-all;
+    word-break: break-word;
     line-height: 1.3;
 }
 
@@ -641,4 +645,54 @@ a {
     }
     .business-card { opacity: 1; transform: none; }
     .save-btn { opacity: 1; transform: none; }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (MOBILE MAX-WIDTH)
+   ============================================ */
+
+@media (max-width: 480px) {
+    .card-scene {
+        max-width: 95%;
+    }
+    
+    .back-content {
+        padding: 16px 20px;
+    }
+    
+    .person-name {
+        font-size: 0.95rem;
+    }
+    
+    .contact-rows {
+        gap: 6px;
+    }
+    
+    .contact-row span {
+        font-size: 0.65rem;
+    }
+    
+    .actual-logo.front-logo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .brand-title {
+        font-size: 1.3rem;
+        margin-top: 15px;
+    }
+    
+    .qr-box {
+        padding: 3px;
+    }
+    
+    .actual-logo.back-logo, .mini-logo {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .mini-brand-text {
+        font-size: 0.45rem;
+        letter-spacing: 0.3em;
+    }
 }
