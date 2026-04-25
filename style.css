@@ -125,6 +125,12 @@ a {
     perspective: 1200px;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    animation: float-card 6s ease-in-out infinite;
+}
+
+@keyframes float-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
 /* ============================================
