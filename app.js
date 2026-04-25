@@ -126,8 +126,28 @@
                     e.preventDefault();
                 });
             } else {
-                btn.addEventListener('click', generateVCard);
+                btn.addEventListener('click', () => {
+                    generateVCard();
+                    // Show WhatsApp capture modal after a brief delay
+                    // so the contact sheet/download has time to initiate
+                    setTimeout(() => {
+                        const overlay = document.getElementById('wa-overlay');
+                        const modal = document.getElementById('wa-modal');
+                        if (overlay && modal) {
+                            overlay.classList.add('show');
+                            modal.classList.add('show');
+                        }
+                    }, 1200);
+                });
             }
+        }
+
+        const waClose = document.getElementById('wa-close');
+        if (waClose) {
+            waClose.addEventListener('click', () => {
+                document.getElementById('wa-overlay').classList.remove('show');
+                document.getElementById('wa-modal').classList.remove('show');
+            });
         }
 
         if ('serviceWorker' in navigator) {
