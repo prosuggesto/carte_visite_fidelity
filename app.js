@@ -56,12 +56,21 @@
 
         new QRCode(container, {
             text: url.toString(),
-            width: qrSize,
-            height: qrSize,
+            width: 300, // HD rendering size to stay sharp on zoom
+            height: 300,
             colorDark: '#FFD700',
             colorLight: '#141420',
-            correctLevel: QRCode.CorrectLevel.H
+            correctLevel: QRCode.CorrectLevel.L // Low error correction = larger blocks = hyper easy scanning
         });
+
+        // Force CSS display size so it stays neatly inside the card layout
+        setTimeout(() => {
+            const children = container.children;
+            for (let i = 0; i < children.length; i++) {
+                children[i].style.width = qrSize + 'px';
+                children[i].style.height = qrSize + 'px';
+            }
+        }, 10);
     }
 
     // ============================================
