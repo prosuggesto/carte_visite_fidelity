@@ -1,0 +1,117 @@
+/* ============================================
+   Fidelity Business Card
+   ============================================ */
+
+(function () {
+    'use strict';
+
+    const CONTACT = {
+        firstName: 'Diego',
+        lastName: 'Lamperim',
+        email: 'lamperim.diego.fidelity.es@gmail.com',
+        phone: '+33767569224',
+    };
+
+    function initFlip() {
+        const card = document.getElementById('business-card');
+        if (!card) return;
+
+        // Toggle sur mobile (clic)
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('a')) return;
+            card.classList.toggle('is-flipped');
+            
+            const hint = document.getElementById('tap-hint');
+            if (hint) {
+                hint.style.opacity = '0';
+            }
+        });
+    }
+
+    // ============================================
+    // QR CODE
+    // ============================================
+    function generateQRCode() {
+        const container = document.getElementById('qrcode');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const url = window.location.href;
+        const cardEl = document.querySelector('.card-face.back');
+        const qrSize = cardEl ? Math.min(Math.floor(cardEl.offsetHeight * 0.35), 80) : 70;
+
+        new QRCode(container, {
+            text: url,
+            width: qrSize,
+            height: qrSize,
+            colorDark: '#FFD700',
+            colorLight: '#141420',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    // ============================================
+    // VCARD
+    // ============================================
+    function generateVCard() {
+        const vcard = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `FN:${CONTACT.firstName} ${CONTACT.lastName}`,
+            `N:${CONTACT.lastName};${CONTACT.firstName};;;`,
+            `TEL;TYPE=CELL:${CONTACT.phone}`,
+            `EMAIL;TYPE=INTERNET:${CONTACT.email}`,
+            `URL:${window.location.href}`,
+            `REV:${new Date().toISOString()}`,
+            'END:VCARD'
+        ].join('\n');
+
+        const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${CONTACT.firstName}_${CONTACT.lastName}.vcf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        const toast = document.getElementById('toast');
+        const el = document.getElementById('toast-message');
+        if (toast && el) {
+            el.textContent = 'Contact enregistré !';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+
+    function init() {
+        // Apparition simple
+        const card = document.getElementById('business-card');
+        if (card) {
+            setTimeout(() => card.classList.add('visible'), 100);
+        }
+
+        initFlip();
+        generateQRCode();
+        
+        const btn = document.getElementById('save-contact');
+        if (btn) btn.addEventListener('click', generateVCard);
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }
+
+        let t;
+        window.addEventListener('resize', () => {
+            clearTimeout(t);
+            t = setTimeout(generateQRCode, 300);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

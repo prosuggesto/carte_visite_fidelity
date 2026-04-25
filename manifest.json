@@ -1,0 +1,27 @@
+{
+    "name": "Diego Lamperim — Fidelity",
+    "short_name": "Fidelity DL",
+    "description": "Carte de visite digitale - Diego Lamperim | Fidelity",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#e8e4df",
+    "theme_color": "#e8e4df",
+    "categories": ["business", "productivity"],
+    "lang": "fr",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

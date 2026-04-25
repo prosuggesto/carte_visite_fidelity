@@ -1,0 +1,644 @@
+/* ============================================
+   DESIGN — Fidelity Business Card (Flip 3D)
+   White BG + Dark Card + Gold Accents
+   ============================================ */
+
+:root {
+    /* Page */
+    --page-bg: #e8e4df;
+    --page-bg-2: #d6d2cc;
+    
+    /* Card */
+    --card-dark: #0e0e14;
+    --card-surface: #141420;
+    
+    /* Fidelity Gold */
+    --gold: #FFD700;
+    --gold-warm: #F5C518;
+    --gold-deep: #D4930D;
+    --gold-dark: #A97206;
+    --gold-glow: rgba(255, 215, 0, 0.35);
+    --gold-subtle: rgba(255, 215, 0, 0.08);
+    --gold-gradient: linear-gradient(135deg, #FFDE59 0%, #F5C518 30%, #D4930D 70%, #A97206 100%);
+    
+    /* Text on dark */
+    --text-light: #f0efe8;
+    --text-mid: rgba(240, 239, 232, 0.6);
+    --text-dim: rgba(240, 239, 232, 0.3);
+    
+    /* Fonts */
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: var(--font-body);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    /* Diagonal light gray background like the ref image */
+    background: 
+        linear-gradient(135deg, var(--page-bg) 0%, #ddd9d3 40%, var(--page-bg-2) 60%, var(--page-bg) 100%);
+    padding: 30px 16px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ============================================
+   PAGE LAYOUT
+   ============================================ */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* ============================================
+   TAP HINT
+   ============================================ */
+
+.tap-hint {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: hint-fade 3s ease forwards;
+    animation-delay: 3s;
+}
+
+.hint-icon {
+    font-size: 1.1rem;
+    animation: hint-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes hint-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes hint-fade {
+    to { opacity: 0.3; }
+}
+
+/* ============================================
+   CARD SCENE (perspective container)
+   ============================================ */
+
+.card-scene {
+    width: 100%;
+    perspective: 1200px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   BUSINESS CARD — 3D Flip Container
+   ============================================ */
+
+.business-card {
+    width: 100%;
+    aspect-ratio: 1.75 / 1;
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.business-card.visible {
+    opacity: 1;
+}
+
+/* Hover and Click Flip Logic */
+.card-scene:hover .business-card,
+.business-card.is-flipped {
+    transform: rotateY(180deg) translateY(-40px);
+}
+
+
+
+/* ============================================
+   CARD FACES
+   ============================================ */
+
+.card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-dark);
+    
+    /* Realistic card shadow */
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.2),
+        0 15px 40px rgba(0, 0, 0, 0.15),
+        0 30px 70px rgba(0, 0, 0, 0.1);
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+/* ============================================
+   GEOMETRIC GOLD SHARDS
+   ============================================ */
+
+.geo-shard {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Front face shards */
+.geo-shard-1 {
+    top: -15px;
+    left: -15px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, transparent 60%);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.geo-shard-2 {
+    top: 10px;
+    left: 30px;
+    width: 60px;
+    height: 70px;
+    background: linear-gradient(180deg, rgba(245, 197, 24, 0.25) 0%, transparent 80%);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 70%);
+    animation: shard-float 5s ease-in-out infinite;
+}
+
+.geo-shard-3 {
+    bottom: -10px;
+    right: -10px;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(315deg, rgba(255, 215, 0, 0.15) 0%, transparent 60%);
+    clip-path: polygon(100% 100%, 0 100%, 100% 0);
+}
+
+.geo-shard-4 {
+    top: 20%;
+    right: 8%;
+    width: 40px;
+    height: 50px;
+    background: rgba(255, 215, 0, 0.12);
+    clip-path: polygon(50% 0%, 100% 60%, 70% 100%, 0% 80%, 20% 30%);
+    animation: shard-float 7s ease-in-out infinite reverse;
+}
+
+.geo-shard-5 {
+    bottom: 15%;
+    left: 15%;
+    width: 30px;
+    height: 35px;
+    background: rgba(212, 147, 13, 0.2);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    animation: shard-float 6s ease-in-out infinite;
+    animation-delay: -2s;
+}
+
+.geo-shard-6 {
+    top: 50%;
+    right: 20%;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 215, 0, 0.18);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    animation: shard-float 4s ease-in-out infinite;
+    animation-delay: -1s;
+}
+
+/* Back face shards */
+.geo-shard-b1 {
+    top: -10px;
+    right: -10px;
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(225deg, rgba(255, 215, 0, 0.18) 0%, transparent 60%);
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+.geo-shard-b2 {
+    bottom: -10px;
+    left: -10px;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, rgba(245, 197, 24, 0.15) 0%, transparent 60%);
+    clip-path: polygon(0 100%, 100% 100%, 0 0);
+}
+
+.geo-shard-b3 {
+    top: 30%;
+    left: 60%;
+    width: 25px;
+    height: 30px;
+    background: rgba(255, 215, 0, 0.1);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    animation: shard-float 5s ease-in-out infinite;
+}
+
+@keyframes shard-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(-5px) rotate(3deg); opacity: 0.7; }
+}
+
+/* ============================================
+   LINE ACCENTS
+   ============================================ */
+
+.line-accent {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.line-top {
+    top: 12px;
+    right: 12px;
+    width: 80px;
+    height: 1px;
+    background: var(--gold-gradient);
+    box-shadow: 0 0 6px var(--gold-glow);
+}
+
+.line-right {
+    top: 12px;
+    right: 12px;
+    width: 1px;
+    height: 50px;
+    background: var(--gold-gradient);
+    box-shadow: 0 0 6px var(--gold-glow);
+}
+
+.line-bottom {
+    bottom: 12px;
+    left: 12px;
+    width: 60px;
+    height: 1px;
+    background: var(--gold-gradient);
+    box-shadow: 0 0 6px var(--gold-glow);
+}
+
+.line-left-b {
+    top: 12px;
+    left: 12px;
+    width: 1px;
+    height: 40px;
+    background: var(--gold-gradient);
+    box-shadow: 0 0 6px var(--gold-glow);
+}
+
+.line-bottom-b {
+    bottom: 12px;
+    right: 12px;
+    width: 50px;
+    height: 1px;
+    background: var(--gold-gradient);
+    box-shadow: 0 0 6px var(--gold-glow);
+}
+
+/* ============================================
+   FRONT CONTENT
+   ============================================ */
+
+.front-content {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+}
+
+.fidelity-logo-wrap {
+    filter: drop-shadow(0 4px 20px var(--gold-glow));
+}
+
+.actual-logo.front-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.2));
+}
+
+/* ============================================
+   BACK CONTENT
+   ============================================ */
+
+.back-content {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 28px;
+}
+
+.back-header {
+    margin-bottom: 14px;
+}
+
+.person-name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.15em;
+}
+
+.gold-rule {
+    width: 40px;
+    height: 2px;
+    background: var(--gold-gradient);
+    margin-top: 8px;
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* Contact rows */
+
+.contact-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: auto;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.contact-row:hover {
+    transform: translateX(3px);
+}
+
+.contact-row:active {
+    transform: scale(0.97);
+}
+
+.contact-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--gold);
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 3px var(--gold-glow));
+}
+
+.contact-row span {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-mid);
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+.contact-row:hover span {
+    color: var(--text-light);
+}
+
+/* Back footer: QR + mini brand */
+
+.back-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.qr-area {
+    flex-shrink: 0;
+}
+
+.qr-box {
+    border: 1.5px solid var(--gold-deep);
+    border-radius: 6px;
+    padding: 4px;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+    background: var(--card-surface);
+}
+
+.qr-box img,
+.qr-box canvas {
+    display: block;
+    border-radius: 3px;
+}
+
+.mini-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.actual-logo.back-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: contain;
+    opacity: 0.8;
+}
+
+.mini-brand-text {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.6;
+}
+
+/* ============================================
+   SAVE BUTTON
+   ============================================ */
+
+.save-btn {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px 24px;
+    border: none;
+    border-radius: 14px;
+    background: var(--card-dark);
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 215, 0, 0.1);
+    
+    animation: btn-enter 0.5s ease forwards;
+    animation-delay: 1s;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+@keyframes btn-enter {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2),
+        0 0 0 1px var(--gold-deep),
+        0 0 25px rgba(255, 215, 0, 0.12);
+    background: linear-gradient(135deg, #1a1a24, #0e0e14);
+}
+
+.save-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.save-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card-dark);
+    color: var(--text-light);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--gold);
+}
+
+.toast span {
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 400px) {
+    .fidelity-logo {
+        width: 70px;
+        height: 70px;
+    }
+
+    .brand-title {
+        font-size: 1.3rem;
+        letter-spacing: 0.28em;
+    }
+
+    .person-name {
+        font-size: 1rem;
+    }
+
+    .back-content {
+        padding: 20px 22px;
+    }
+
+    .front-content {
+        padding: 20px;
+    }
+}
+
+@media (max-height: 650px) {
+    body {
+        padding: 16px;
+    }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .business-card { opacity: 1; transform: none; }
+    .save-btn { opacity: 1; transform: none; }
+}
