@@ -102,7 +102,7 @@
         const toast = document.getElementById('toast');
         const el = document.getElementById('toast-message');
         if (toast && el) {
-            el.textContent = 'Contact enregistré !';
+            el.textContent = '¡Contacto guardado!';
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
@@ -142,13 +142,6 @@
             }
         }
 
-        const waClose = document.getElementById('wa-close');
-        if (waClose) {
-            waClose.addEventListener('click', () => {
-                document.getElementById('wa-overlay').classList.remove('show');
-                document.getElementById('wa-modal').classList.remove('show');
-            });
-        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(() => {});
